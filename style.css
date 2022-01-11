@@ -44,6 +44,7 @@ body {
 main {
     content: "";
     height: 100%;
+
     background-color: white;
     box-shadow: 0px 32px 43px rgba(79, 166, 175, 0.200735);
     border-radius: 25px 25px 0px 0px;
@@ -53,11 +54,10 @@ main {
 .container {
     margin: 2rem auto;
     width: calc(100% - 2rem);
-    border: 5px pink dotted;
     position: relative;
     display: flex;
     flex-direction: column;
-
+    max-width: 1000px;
 }
 
 label {
@@ -79,7 +79,12 @@ label {
     height: calc(48rem/16);
     text-align: right;
     background-color: var(--very-pale-blue);
-}
+    border:2px solid transparent;
+    }
+
+    .inputarea.focussed{
+        border-color: var(--powderblue);
+    }
 
 
 input[type="text"]  {
@@ -98,6 +103,12 @@ input[type="text"]  {
     text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
 }
+input:focus{
+    border-color:transparent;
+    box-shadow: transparent;
+    outline: none;
+}
+
 
 
 
@@ -145,7 +156,15 @@ input[type="text"]  {
     border-radius: 5px;;;
 
 }
+.button:hover{
+    color:var(--green);
+}
 
+.button.pressed {
+background-color:var(--skblue);
+color:var(--darkgreen);
+
+}
 .button:nth-child(odd) {
     margin-left: 0;
 }
@@ -155,15 +174,21 @@ input[type="text"]  {
     color:var(--darkcyan);
 }
 
+.button:last-child:hover{
+    background-color: var(--green);
+    color:var(--very-pale-blue);
+}
+
+
 output {
     background-color: var(--darkgreen);
     height:calc(260rem/16);
     margin:3rem 0;
+    border-radius:15px;
 }
 
 .outrow {
-    border: 1px white solid;
-    height:33%;
+       height:33%;
     display:flex;
     justify-content: space-between;
     align-items: center;
@@ -206,3 +231,69 @@ color:var(--powderblue);
 
 
 }
+
+
+
+
+
+@media (min-width:600px){
+
+body{
+    height:auto;
+}
+
+.container{
+    flex-direction: row;
+    justify-content: space-between;
+}
+output{
+    margin:1rem 0 0 3rem;
+    align-self: stretch;
+    height:auto;
+}
+main{
+padding:0 0 1.5rem 0;
+
+}
+
+
+}
+
+
+
+
+
+
+@media (min-width:1000px){
+
+    body{
+          height:auto;
+    }
+    main{
+        width:90%;
+        margin:0 auto 2rem auto;
+    }
+    
+    .container{
+        flex-direction: row;
+        justify-content: space-between;
+        align-items:flex-start;
+        padding:0 3rem;
+ 
+    }
+    .container > *{
+        flex: 1 1 50%;
+           }
+
+.button{
+    flex: 1 1 calc(33.3% - 2rem);
+}
+.button:nth-child(odd) {
+    margin-left: 1rem;
+}
+.button:nth-child(1), .button:nth-child(4) {
+    margin-left: 0;
+}
+
+
+    }

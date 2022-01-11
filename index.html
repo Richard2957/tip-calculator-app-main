@@ -35,62 +35,72 @@
       <div class="enterdata">
 
         <label id="billamount" for="bill_amount">Bill</label>
-        <div class="inputarea">
+        <div class="inputarea inputareabill ">
           <div class=" icon dollaricon"></div>
-          <input type="text" value="0" id="bill_amount" />
+          <input type="text" value="0" id="bill" />
         </div>
 
 
         <label id="selecttip" for="">Select Tip %</label>
         <div class="buttons">
-          <div class="button">5% </div>
-          <div class="button">10% </div>
-          <div class="button">15% </div>
-          <div class="button">25% </div>
-          <div class="button">50% </div>
-          <div class="button">Custom</div>
+          <div id="but0" data-value="5" class="button">5% </div>
+          <div id="but1" data-value="10" class="button">10% </div>
+          <div id="but2" data-value="15" class="button pressed">15% </div>
+          <div id="but3" data-value="25" class="button">25% </div>
+          <div id="but4" data-value="50" class="button">50% </div>
+          <div id="but5" data-value="0" class="button">Custom</div>
+
+            <!-- <div class="custompercent"><input type="text" id="custom"></div> -->
+   
+
+
+
+
+
         </div>
 
-
-
-        <label for="head_count">Number of People</label>
-        <div class="inputarea">
-          <div class=" icon peopleicon"></div>
-          <input type="text" name="" id="head_count">
-        </div>
+    
 
 
 
+      <label for="head_count">Number of People</label>
+      <div class="inputarea inputareaheadcount">
+        <div class=" icon peopleicon"></div>
+        <input type="text" name="" id="headcount">
       </div>
 
 
 
-      <output>
+    </div>
 
-        <div class="outrow">
-          <div class="outrow-caption">
-            <h3>Tip Amount</h3>
-            <p>/ person</p>
-          </div>
-          <div class="result">$1234</div>
+
+
+    <output>
+
+      <div class="outrow">
+        <div class="outrow-caption">
+          <h3>Tip Amount</h3>
+          <p>/ person</p>
         </div>
-
-
-
-        <div class="outrow">
-          <div class="outrow-caption">
-            <h3>Total</h3>
-            <p>/ person</p>
-          </div>
-          <div class="result">$1234</div>
-        </div>
-
-
-
-        <div class="outrow">
-          <div class="resetbutton">Reset</div>
+        <div class="result">$1234</div>
       </div>
-      </output>
+
+
+
+      <div class="outrow">
+        <div class="outrow-caption">
+          <h3>Total</h3>
+          <p>/ person</p>
+        </div>
+        <div class="result">$1234</div>
+      </div>
+
+
+
+      <div class="outrow">
+        <div class="resetbutton">Reset</div>
+      </div>
+    </output>
     </div>
 
 
@@ -103,6 +113,62 @@
     Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>.
     Coded by <a href="#">Your Name Here</a>.
   </div>
+
+
+  <script>
+    function updateButtons(el) {
+
+      console.log(el);
+      console.log(el.originalTarget);
+
+      //const butPressed=el.originalTarget.id.slice(3);
+
+      //const percent=el.originalTarget.getAttribute("data-value");
+
+      //console.log(butPressed, percent);
+
+    }
+
+
+
+
+    function updateOutput(el) {
+      let dataValid = true;
+
+
+      console.log(el);
+      const activeElement = document.activeElement;
+
+      (activeElement == inputBill) ? inputareaBill.classList.add("focussed"): inputareaBill.classList.remove(
+      "focussed");
+      (activeElement == inputHeadcount) ? inputareaHeadcount.classList.add("focussed"): inputareaHeadcount.classList
+        .remove("focussed");
+
+    }
+
+    let buttonPressed = -1;
+    let customValue = 0;
+    const inputareaBill = document.querySelector(".inputareabill");
+    const inputareaHeadcount = document.querySelector(".inputareaheadcount");
+    const inputBill = document.querySelector("#bill");
+    const inputHeadcount = document.querySelector("#headcount");
+    const allButtons = document.querySelectorAll(".button");
+
+    inputBill.addEventListener("focus", updateOutput);
+    inputBill.addEventListener("blur", updateOutput);
+    inputBill.addEventListener("keypress", updateOutput);
+
+    inputHeadcount.addEventListener("focus", updateOutput);
+    inputHeadcount.addEventListener("blur", updateOutput);
+    inputHeadcount.addEventListener("keypress", updateOutput);
+
+    allButtons.forEach(x => addEventListener("click", updateButtons));
+  </script>
+
+
+
+
+
 </body>
 
 </html>
