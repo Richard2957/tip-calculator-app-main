@@ -34,15 +34,20 @@
 
     <div class="container">
       <div class="enterdata">
-
-        <label title="Bill amount" id="billamount" for="bill_amount">Bill</label>
+        <div class="labelandmessage">
+          <label title="Bill amount" id="billamount" for="bill_amount">Bill</label>
+          <div id="messbill" class="hidden errormessage">Invalid entry</div>
+        </div>
         <div class="inputarea inputareabill ">
           <div alt="Dollars" class=" icon dollaricon"></div>
-          <input type="text" value="0" id="bill_amount" />
+          <input type="text" value="" id="bill_amount" />
         </div>
 
+        <div class="labelandmessage">
+          <label title="Select Tip" title="Select tip" id="selecttip" for="inputCustom">Select Tip %</label>
+          <div id="messcust" class="hidden errormessage">Bad custom value</div>
+        </div>
 
-        <label title="Select tip" id="selecttip" for="custom">Select Tip %</label>
         <div id="buttons" class="buttons">
           <div id="but0" data-value="5" class="button">5% </div>
           <div id="but1" data-value="10" class="button">10% </div>
@@ -50,126 +55,194 @@
           <div id="but3" data-value="25" class="button">25% </div>
           <div id="but4" data-value="50" class="button">50% </div>
           <div id="but5" data-value="0" class="button">Custom
+            <div class="custompercent custompercenthidden"><input type="text" id="inputCustom"></div>
 
-            <div class="custompercent custompercenthidden"><input type="text" id="custom"></div>
-   
           </div>
 
-
-
-
         </div>
 
-    
-
-
-
-      <label for="head_count">Number of People</label>
-      <div class="inputarea inputareaheadcount">
-        <div  alt="People" class=" icon peopleicon"></div>
-        <input type="text" name="" id="head_count">
-      </div>
-
-
-
-    </div>
-
-
-
-    <output>
-
-      <div class="outrow">
-        <div class="outrow-caption">
-          <h2>Tip Amount</h2>
-          <p>/ person</p>
+       <div class="labelandmessage">
+          <label for="head_count">Number of People</label>
+          <div id="messpeople" class="hidden errormessage">Invalid entry</div>
         </div>
-        <div class="result">$1234</div>
-      </div>
-
-
-
-      <div class="outrow">
-        <div class="outrow-caption">
-          <h2>Total</h2>
-          <p>/ person</p>
+        <div class="inputarea inputareaheadcount">
+          <div alt="People" class=" icon peopleicon"></div>
+          <input type="text" name="" id="head_count">
         </div>
-        <div class="result">$1234</div>
       </div>
 
+      <output>
 
+        <div class="outrow">
+          <div class="outrow-caption">
+            <h2>Tip Amount</h2>
+            <p>/ person</p>
+          </div>
+          <div id="tipamount" class="hidden result">xx</div>
+        </div>
 
-      <div class="outrow">
-        <div class="resetbutton">Reset</div>
-      </div>
-    </output>
+        <div class="outrow">
+          <div class="outrow-caption">
+            <h2>Total</h2>
+            <p>/ person</p>
+          </div>
+          <div id="total" class="hidden result">xx</div>
+        </div>
+
+        <div class="outrow">
+          <div class="resetbutton">Reset</div>
+        </div>
+      </output>
     </div>
 
 
   </main>
 
-
-
-
   <div class="attribution">
     Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>.
-    Coded by <a href="#">Your Name Here</a>.
+    Coded by <a href="https://www.frontendmentor.io/profile/Richard2957">Richard Marks</a>.
   </div>
 
 
   <script>
     function updateButtons(el) {
+      try {
+        const butPressed = el.originalTarget.id;
+        allButtons.forEach(x => {
+          x.classList.remove("pressed");
+          if (x.id == butPressed) {
+            x.classList.add("pressed");
+          }
+        });
 
-      console.log(el);
-      console.log(el.originalTarget);
-
-      //const butPressed=el.originalTarget.id.slice(3);
-
-      //const percent=el.originalTarget.getAttribute("data-value");
-
-      //console.log(butPressed, percent);
-
+        useCustomPercentage = (butPressed == "but5");
+        if (useCustomPercentage) {
+          customPercent.classList.remove("custompercenthidden");
+          inputCustom.focus();
+        } else {
+          percent = el.originalTarget.getAttribute("data-value");
+          customPercent.classList.add("custompercenthidden");
+        }
+      } catch (err) {} finally {
+        updateOutput()
+      }
     }
 
 
 
 
     function updateOutput(el) {
-      let dataValid = true;
+      total.classList.add("hidden");
+      tipAmount.classList.add("hidden");
+      if (!inputBill.value || !inputHeadcount.value) {
+        return;
+      }
+      if ((isNaN(inputBill.value)) || (inputBill.value < 1)) {
+        messBill.classList.remove("hidden");
+        return
+      } else {
+        messBill.classList.add("hidden");
+      }
+      if ((isNaN(inputHeadcount.value)) || (inputHeadcount.value < 1) || (Number.isInteger(Number(inputHeadcount
+          .value)) == false)) {
+        messPeople.classList.remove("hidden");
+        return
+      } else {
+        messPeople.classList.add("hidden");
+      }
 
+      if (useCustomPercentage) {
+        if ((isNaN(inputCustom.value)) || (inputCustom.value < 1)) {
+          messCust.classList.remove("hidden");
+          return
+        } else {
+          messCust.classList.add("hidden");
+        }
 
-      console.log(el);
+      } else {
+        messCust.classList.add("hidden");
+      }
+
+      if ((!useCustomPercentage) && !(percent)) {
+        return;
+      }
+
+      const actualPercent = ((useCustomPercentage) ? inputCustom.value : percent);
+      const tipAmountPP = inputBill.value * actualPercent / (100 * inputHeadcount.value);
+      const totalPP = ((Number(inputBill.value)) + (Number(inputBill.value) * actualPercent / 100)) / Number(
+        inputHeadcount.value);
+
+      console.log(totalPP);
+
+      total.innerHTML = "$" + totalPP.toFixed(2);
+      tipAmount.innerHTML = "$" + tipAmountPP.toFixed(2);
+
+      total.classList.remove("hidden");
+      tipAmount.classList.remove("hidden");
+
+      // Ensure that if an Input is focussed then the surrounding inputarea has the border showing.
       const activeElement = document.activeElement;
-
       (activeElement == inputBill) ? inputareaBill.classList.add("focussed"): inputareaBill.classList.remove(
-      "focussed");
+        "focussed");
       (activeElement == inputHeadcount) ? inputareaHeadcount.classList.add("focussed"): inputareaHeadcount.classList
         .remove("focussed");
-
     }
 
-    let buttonPressed = -1;
-    let customValue = 0;
+
+    function resetAll() {
+      percent = 0;
+      inputBill.value = "";
+      inputCustom.value = "";
+      inputHeadcount.value = "";
+      allButtons.forEach(x => x.classList.remove("pressed"));
+      updateOutput();
+    }
+
+
+    /*      MAIN / INITIALISATION CODE    */
+
+    let percent = 0;
+    let useCustomPercentage = false;
+
+    const inputBill = document.querySelector("#bill_amount");
+    const inputHeadcount = document.querySelector("#head_count");
+    const inputCustom = document.querySelector("#inputCustom");
+
+
     const inputareaBill = document.querySelector(".inputareabill");
     const inputareaHeadcount = document.querySelector(".inputareaheadcount");
-    const inputBill = document.querySelector("#bill");
-    const inputHeadcount = document.querySelector("#headcount");
+
+
     const allButtons = document.querySelectorAll(".button");
+    const customPercent = document.querySelector(".custompercent");
+
+    const messBill = document.querySelector("#messbill");
+    const messPeople = document.querySelector("#messpeople");
+    const messCust = document.querySelector("#messcust");
+
+    const tipAmount = document.querySelector("#tipamount");
+    const total = document.querySelector("#total");
+
+    const resetButton = document.querySelector(".resetbutton");
+
 
     inputBill.addEventListener("focus", updateOutput);
     inputBill.addEventListener("blur", updateOutput);
-    inputBill.addEventListener("keypress", updateOutput);
+    inputBill.addEventListener("keyup", updateOutput);
 
     inputHeadcount.addEventListener("focus", updateOutput);
     inputHeadcount.addEventListener("blur", updateOutput);
-    inputHeadcount.addEventListener("keypress", updateOutput);
+    inputHeadcount.addEventListener("keyup", updateOutput);
+
+    inputCustom.addEventListener("focus", updateOutput);
+    inputCustom.addEventListener("blur", updateOutput);
+    inputCustom.addEventListener("keyup", updateOutput);
+
+    resetButton.addEventListener("click", resetAll);
 
     allButtons.forEach(x => addEventListener("click", updateButtons));
   </script>
 
 
-
-
-
 </body>
-
 </html>
