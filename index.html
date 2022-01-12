@@ -114,12 +114,14 @@
             x.classList.add("pressed");
           }
         });
-
+        const but5=document.getElementById("but5");
         useCustomPercentage = (butPressed == "but5");
         if (useCustomPercentage) {
           customPercent.classList.remove("custompercenthidden");
+          but5.style.color="transparent";
           inputCustom.focus();
         } else {
+          but5.style.color="#5e7a7d";
           percent = el.originalTarget.getAttribute("data-value");
           customPercent.classList.add("custompercenthidden");
         }
@@ -152,6 +154,7 @@
       }
 
       if (useCustomPercentage) {
+        if(!inputCustom.value) return;
         if ((isNaN(inputCustom.value)) || (inputCustom.value < 1)) {
           messCust.classList.remove("hidden");
           return
